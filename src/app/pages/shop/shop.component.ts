@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import {StoreItem} from '../../models/item';
+import {Component} from '@angular/core';
 import {ShopItemComponent} from '../../components/shop-item/shop-item.component';
 
 @Component({
