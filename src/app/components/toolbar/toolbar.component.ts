@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
+import {AppStore} from '../../state/store';
 
 @Component({
   selector: 'app-toolbar',
@@ -23,7 +24,7 @@ import {MatIconModule} from '@angular/material/icon';
         </a>
       </div>
       <a mat-icon-button routerLink="/cart">
-        <mat-icon [matBadge]="'0'">shopping_cart</mat-icon>
+        <mat-icon [matBadge]="store.totalItemsInCart()">shopping_cart</mat-icon>
       </a>
     </mat-toolbar>
   `,
@@ -40,5 +41,5 @@ import {MatIconModule} from '@angular/material/icon';
   `
 })
 export class ToolbarComponent {
-
+  protected store = inject(AppStore);
 }

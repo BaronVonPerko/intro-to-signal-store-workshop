@@ -13,8 +13,8 @@ import {AppStore} from '../../state/store';
       <app-cart-item [item]="item" />
     }
 
-    @if (true) {
-      <h3>Total: {{0 | currency}}</h3>
+    @if (store.totalItemsInCart()) {
+      <h3>Total: {{store.totalPrice() | currency}}</h3>
       <button mat-flat-button>Check Out</button>
     }
   `,

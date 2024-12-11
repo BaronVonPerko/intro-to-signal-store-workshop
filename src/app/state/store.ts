@@ -19,6 +19,10 @@ export const AppStore = signalStore(
   withComputed((store) => ({
     itemsInCart: computed(() => store.items().filter(item => item.inCart)),
   })),
+  withComputed((store) => ({
+    totalItemsInCart: computed(() => store.itemsInCart().length),
+    totalPrice: computed(() => store.itemsInCart().reduce((acc, curr) => acc + curr.price, 0)),
+  })),
   withMethods((store) => ({
     toggleInCart(itemToUpdate: StoreItem, addToCart: boolean) {
       const items = [
