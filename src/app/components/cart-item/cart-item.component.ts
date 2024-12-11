@@ -1,8 +1,9 @@
-import {Component, input} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import {Item} from '../../models/item';
 import {CurrencyPipe, NgOptimizedImage} from '@angular/common';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
+import {AppStore} from '../../state/store';
 
 @Component({
   selector: 'app-cart-item',
@@ -15,11 +16,12 @@ import {MatButtonModule} from '@angular/material/button';
         <img mat-card-image-sm [ngSrc]="item().image" mat-card-image width="75" height="75" />
       </mat-card-title-group>
       <mat-card-actions>
-        <button mat-button>Remove from Cart</button>
+        <button (click)="store.toggleInCart(item(), false)" mat-button>Remove from Cart</button>
       </mat-card-actions>
     </mat-card>
   `,
 })
 export class CartItemComponent {
   item = input.required<Item>();
+  protected store = inject(AppStore);
 }
