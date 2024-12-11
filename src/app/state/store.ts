@@ -1,5 +1,6 @@
 import {StoreItem} from '../models/item';
-import {signalStore, withHooks, withState} from '@ngrx/signals';
+import {patchState, signalStore, withHooks, withState} from '@ngrx/signals';
+import {serverItems} from '../data/item-data';
 
 type State = {
   status: 'loading' | 'success' | 'error';
@@ -16,7 +17,7 @@ export const AppStore = signalStore(
   withState(initialState),
   withHooks({
     onInit(store) {
-
+      patchState(store, () => ({items: serverItems}))
     }
   })
 )
