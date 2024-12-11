@@ -27,6 +27,6 @@ import {AppStore} from '../../state/store';
 })
 export class ShopComponent {
   protected store = inject(AppStore);
-  protected items = this.store.items;
+  protected items = this.store.entities;
   protected status = this.store.status;
 }

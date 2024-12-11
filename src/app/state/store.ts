@@ -2,22 +2,22 @@ import {StoreItem} from '../models/item';
 import {patchState, signalStore, withComputed, withHooks, withMethods, withState} from '@ngrx/signals';
 import {serverItems} from '../data/item-data';
 import {computed} from '@angular/core';
+import {setEntities, updateEntities, updateEntity, withEntities} from '@ngrx/signals/entities';
 
 type State = {
   status: 'loading' | 'success' | 'error';
-  items: StoreItem[]
 }
 
 const initialState: State = {
   status: 'loading',
-  items: [],
 }
 
 export const AppStore = signalStore(
   {providedIn: 'root'},
   withState(initialState),
+  withEntities<StoreItem>(),
   withComputed((store) => ({
-    itemsInCart: computed(() => store.items().filter(item => item.inCart)),
+    itemsInCart: computed(() => store.entities().filter(item => item.inCart)),
   })),
   withComputed((store) => ({
     totalItemsInCart: computed(() => store.itemsInCart().length),
@@ -25,17 +25,18 @@ export const AppStore = signalStore(
   })),
   withMethods((store) => ({
     toggleInCart(itemToUpdate: StoreItem, addToCart: boolean) {
-      const items = [
-        ...store.items().map((item) =>
-          item.id === itemToUpdate.id ? {...item, inCart: addToCart} : item
-        )
-      ];
-      patchState(store, () => ({items}));
+      patchState(
+        store,
+        updateEntity({id: itemToUpdate.id, changes: {inCart: addToCart} }),
+      )
     }
   })),
   withHooks({
     onInit(store) {
-      patchState(store, () => ({items: serverItems}))
+      patchState(
+        store,
+        setEntities(serverItems)
+      )
     }
   })
 )
