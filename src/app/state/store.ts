@@ -1,5 +1,5 @@
 import {StoreItem} from '../models/item';
-import {signalStore, withState} from '@ngrx/signals';
+import {signalStore, withHooks, withState} from '@ngrx/signals';
 
 type State = {
   status: 'loading' | 'success' | 'error';
@@ -14,4 +14,9 @@ const initialState: State = {
 export const AppStore = signalStore(
   {providedIn: 'root'},
   withState(initialState),
+  withHooks({
+    onInit(store) {
+
+    }
+  })
 )
