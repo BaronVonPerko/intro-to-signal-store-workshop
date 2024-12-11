@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {ShopItemComponent} from '../../components/shop-item/shop-item.component';
+import {AppStore} from '../../state/store';
 
 @Component({
   selector: 'app-shop',
@@ -9,10 +10,10 @@ import {ShopItemComponent} from '../../components/shop-item/shop-item.component'
   template: `
     <h3>Shop Page</h3>
     <section class="items">
-      @if (true) {
+      @if (status() === 'loading') {
         <p>Loading...</p>
       }
-      @for(item of []; track $index) {
+      @for(item of items(); track $index) {
         <app-shop-item [item]="item" />
       }
     </section>
@@ -25,4 +26,7 @@ import {ShopItemComponent} from '../../components/shop-item/shop-item.component'
     }`
 })
 export class ShopComponent {
+  protected store = inject(AppStore);
+  protected items = this.store.items;
+  protected status = this.store.status;
 }
