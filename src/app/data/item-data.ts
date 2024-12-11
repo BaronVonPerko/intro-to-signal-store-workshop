@@ -1,5 +1,6 @@
 import {Item} from '../models/item';
 import {Injectable} from '@angular/core';
+import {delay, Observable, of} from 'rxjs';
 
 export const serverItems: Item[] = [
   { id: 1, name: 'Furby', price: 34.99, image: 'furby.png' },
@@ -10,11 +11,9 @@ export const serverItems: Item[] = [
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  load(): Promise<Item[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(serverItems);
-      }, 2000);
-    });
+  load(): Observable<Item[]> {
+    return of(serverItems).pipe(
+      delay(2000)
+    )
   }
 }

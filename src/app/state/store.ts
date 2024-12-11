@@ -1,8 +1,10 @@
 import {StoreItem} from '../models/item';
 import {patchState, signalStore, withComputed, withHooks, withMethods, withState} from '@ngrx/signals';
-import {ApiService, serverItems} from '../data/item-data';
+import {ApiService} from '../data/item-data';
 import {computed, inject} from '@angular/core';
-import {setEntities, updateEntities, updateEntity, withEntities} from '@ngrx/signals/entities';
+import {setEntities, updateEntity, withEntities} from '@ngrx/signals/entities';
+import {rxMethod} from '@ngrx/signals/rxjs-interop';
+import {pipe, switchMap, tap} from 'rxjs';
 
 type State = {
   status: 'loading' | 'success' | 'error';
@@ -10,7 +12,7 @@ type State = {
 
 const initialState: State = {
   status: 'loading',
-}
+};
 
 export const AppStore = signalStore(
   {providedIn: 'root'},
@@ -27,18 +29,22 @@ export const AppStore = signalStore(
     toggleInCart(itemToUpdate: StoreItem, addToCart: boolean) {
       patchState(
         store,
-        updateEntity({id: itemToUpdate.id, changes: {inCart: addToCart} }),
-      )
+        updateEntity({id: itemToUpdate.id, changes: {inCart: addToCart}}),
+      );
     },
-    async loadData() {
-      await api.load()
-        .then(items => patchState(store, setEntities(items), {status: 'success'}))
-        .catch(() => patchState(store, {status: 'error'}));
-    }
+    loadData: rxMethod<void>(
+      pipe(
+        switchMap(() => api.load()),
+        tap({
+          next: (data) => patchState(store, setEntities(data), {status: 'success'}),
+          error: () => patchState(store, {status: 'error'})
+        })
+      )
+    )
   })),
   withHooks({
     onInit(store) {
       store.loadData();
     }
   })
-)
+);
