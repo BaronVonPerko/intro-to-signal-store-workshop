@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import {ToolbarComponent} from './components/toolbar/toolbar.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, ToolbarComponent],
   template: `
-    <h1>Welcome to {{title}}!</h1>
+    <app-toolbar />
 
     <router-outlet />
   `,
   styles: [],
 })
 export class AppComponent {
-  title = 'intro-to-signal-store';
 }
