@@ -1,5 +1,5 @@
 import {StoreItem} from '../models/item';
-import {patchState, signalStore, withComputed, withHooks, withMethods, withState} from '@ngrx/signals';
+import {patchState, signalStore, withComputed, withHooks, withMethods, withState, PartialStateUpdater} from '@ngrx/signals';
 import {ApiService} from '../data/item-data';
 import {computed, inject} from '@angular/core';
 import {setEntities, updateEntity, withEntities} from '@ngrx/signals/entities';
@@ -36,8 +36,8 @@ export const AppStore = signalStore(
       pipe(
         switchMap(() => api.load()),
         tap({
-          next: (data) => patchState(store, setEntities(data), {status: 'success'}),
-          error: () => patchState(store, {status: 'error'})
+          next: (data) => patchState(store, setEntities(data), setLoadSuccess()),
+          error: () => patchState(store, setLoadError())
         })
       )
     )
@@ -48,3 +48,11 @@ export const AppStore = signalStore(
     }
   })
 );
+
+export function setLoadError(): PartialStateUpdater<State> {
+  return (state) => ({status: 'error'});
+}
+
+export function setLoadSuccess(): PartialStateUpdater<State> {
+  return (state) => ({status: 'success'})
+}
