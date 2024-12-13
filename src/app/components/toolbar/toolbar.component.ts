@@ -23,9 +23,13 @@ import {AppStore} from '../../state/store';
           Store
         </a>
       </div>
-      <a mat-icon-button routerLink="/cart">
-        <mat-icon [matBadge]="store.totalItemsInCart()">shopping_cart</mat-icon>
-      </a>
+      <div class="right">
+        <a mat-icon-button routerLink="/cart">
+          <mat-icon [matBadge]="store.totalItemsInCart()">shopping_cart</mat-icon>
+        </a>
+        <mat-icon>account_circles</mat-icon>
+        <span>{{ username }}</span>
+      </div>
     </mat-toolbar>
   `,
   styles: `
@@ -34,7 +38,7 @@ import {AppStore} from '../../state/store';
       justify-content: space-between;
     }
 
-    .left {
+    .left, .right {
       display: flex;
       align-items: center;
     }
@@ -42,4 +46,5 @@ import {AppStore} from '../../state/store';
 })
 export class ToolbarComponent {
   protected store = inject(AppStore);
+  username = this.store.user.username();
 }
