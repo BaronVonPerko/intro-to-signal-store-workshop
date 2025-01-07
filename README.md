@@ -2,6 +2,8 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.2.
 
+> Instructions can be found on [my website here.](https://perko.dev/workshops/intro-to-ngrx-signal-store)
+
 ## Development server
 
 To start a local development server, run:
